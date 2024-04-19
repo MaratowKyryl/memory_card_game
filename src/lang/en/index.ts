@@ -4,4 +4,5 @@ export default {
   EASY: "EASY",
   MEDIUM: "MEDIUM",
   HARD: "HARD",
+  NEW_GAME: "New Game",
 };
