@@ -1,10 +1,9 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View, Image } from "react-native";
 import Animated from "react-native-reanimated";
-import { isNumber } from "util";
 
-import { BainsleyBoldText } from "@/src/common/components/StyledText";
 import Colors from "@/src/common/constants/Colors";
+import { images } from "@/src/feature/game/constants/data";
 import { useFlipAnimation } from "@/src/feature/game/utils/hooks";
 import { iCard } from "@/src/feature/game/utils/types";
 
@@ -33,7 +32,7 @@ export default function AnimatedCard({
       </TouchableOpacity>
       <TouchableOpacity onPress={onOpened}>
         <Animated.View style={[styles.cardBack, backAnimatedStyle]}>
-          {item || isNumber(item) ? <BainsleyBoldText>{item.pairId}</BainsleyBoldText> : null}
+          {item ? <Image source={images[item.imageId]} style={{ width: 50, height: 50 }} /> : null}
         </Animated.View>
       </TouchableOpacity>
     </View>
@@ -59,7 +58,7 @@ const styles = StyleSheet.create({
     height: 100,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: Colors.newGameButton,
+    // backgroundColor: Colors.newGameButton,
     backfaceVisibility: "hidden",
     borderWidth: 1,
     borderColor: Colors.borderBlack,

@@ -8,5 +8,5 @@ export interface iCard {
   id: number;
   pairId: number;
   flipped: boolean;
-  path: string;
+  imageId: string;
 }
