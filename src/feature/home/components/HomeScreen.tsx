@@ -8,7 +8,7 @@ import Lang from "@/src/lang";
 export default function HomeScreen() {
   return (
     <View style={styles.contentContainer}>
-      <BainsleyText style={{ fontSize: 30 }}>{Lang.SELECT_DIFFICULTY}</BainsleyText>
+      <BainsleyText style={styles.selectDifficultyTitle}>{Lang.SELECT_DIFFICULTY}</BainsleyText>
       <SelectDifficultyButton navigateTo="/game/easy" text={Lang.EASY} />
       <SelectDifficultyButton navigateTo="/game/medium" text={Lang.MEDIUM} />
       <SelectDifficultyButton navigateTo="/game/hard" text={Lang.HARD} />
@@ -33,6 +33,9 @@ const styles = StyleSheet.create({
     height: "80%",
     justifyContent: "center",
     alignItems: "center",
+  },
+  selectDifficultyTitle: {
+    fontSize: 30,
   },
   selectDifficultyButton: {
     width: 200,
