@@ -7,6 +7,5 @@ export enum eDifficulty {
 export interface iCard {
   id: number;
   pairId: number;
-  flipped: boolean;
   imageId: string;
 }
