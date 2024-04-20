@@ -1,42 +1,21 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { BainsleyBoldText } from "@/src/common/components/StyledText";
 import Colors from "@/src/common/constants/Colors";
-import AnimatedCard from "@/src/feature/game/components/AnimatedCard";
-import { cards } from "@/src/feature/game/constants/data";
-import { iCard } from "@/src/feature/game/utils/types";
+import { AnimatedCard } from "@/src/feature/game/components/AnimatedCard";
+import { useCards } from "@/src/feature/game/utils/hooks";
 import Lang from "@/src/lang";
 
 export default function GameScreen() {
   const router = useRouter();
-  const [shuffledCards, setShuffledCards] = useState<(iCard | undefined)[]>([]);
-  const [arrayCards, setArrayCards] = useState<(iCard | undefined)[]>([]);
   const { difficultyId } = useLocalSearchParams();
   const numColumns = useRef(difficultyId === "easy" ? 2 : difficultyId === "medium" ? 3 : 4);
-
-  useEffect(() => {
-    const arrayLength = difficultyId === "easy" ? 8 : difficultyId === "medium" ? 12 : 16;
-    const shuffledArrayCards = Array.from({ length: arrayLength }, (_, i) => undefined);
-    const arrayCards = cards.slice(0, arrayLength);
-
-    // const shuffledArray = arrayCards.sort(() => Math.random() - 0.5);
-    setArrayCards(arrayCards);
-    setShuffledCards(shuffledArrayCards);
-  }, []);
-
-  const onCardOpened = (index: number, card: iCard | undefined) => {
-    if (!card) {
-      const randomIndex = Math.floor(Math.random() * arrayCards.length);
-      const newShuffledArray = [...shuffledCards];
-      newShuffledArray[index] = arrayCards[randomIndex];
-      setShuffledCards(newShuffledArray);
-      const newCardArray = arrayCards.filter((_, i) => i !== randomIndex);
-      setArrayCards(newCardArray);
-    }
-  };
+  const { shuffledCards, onCardOpened, openedCards, guessedCards } = useCards(
+    difficultyId as string,
+  );
 
   return (
     <View style={styles.contentContainer}>
@@ -47,7 +26,14 @@ export default function GameScreen() {
       <FlatList
         data={shuffledCards}
         renderItem={({ item, index }) => (
-          <AnimatedCard key={index} index={index} item={item} onCardOpened={onCardOpened} />
+          <AnimatedCard
+            key={index}
+            index={index}
+            item={item}
+            onCardOpened={onCardOpened}
+            isOpened={openedCards.includes(index)}
+            isGuessed={guessedCards.includes(index)}
+          />
         )}
         numColumns={numColumns.current}
         keyExtractor={(item, index) => index.toString()}
