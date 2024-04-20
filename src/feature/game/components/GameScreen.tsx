@@ -1,23 +1,41 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { BainsleyBoldText } from "@/src/common/components/StyledText";
 import Colors from "@/src/common/constants/Colors";
 import { AnimatedCard } from "@/src/feature/game/components/AnimatedCard";
-import { useCards } from "@/src/feature/game/utils/hooks";
+import { cards } from "@/src/feature/game/constants/data";
+import { iCard } from "@/src/feature/game/utils/types";
 import Lang from "@/src/lang";
 
 export default function GameScreen() {
   const router = useRouter();
   const { difficultyId } = useLocalSearchParams();
   const numColumns = useRef(difficultyId === "easy" ? 2 : difficultyId === "medium" ? 3 : 4);
-  const cardSize = useRef<number>(difficultyId === "hard" ? 70 : 100);
-  const imageSize = useRef<number>(difficultyId === "hard" ? 50 : 70);
-  const { shuffledCards, onCardOpened, openedCards, guessedCards } = useCards(
-    difficultyId as string,
-  );
+  const cardSize = { current: 100 };
+  const imageSize = { current: 80 };
+  const [shuffledCards, setShuffledCards] = useState<iCard[]>([]);
+
+  useEffect(() => {
+    const arrayLength = difficultyId === "easy" ? 8 : difficultyId === "medium" ? 12 : 16;
+    const arrayCards = cards.slice(0, arrayLength);
+    const shuffledArrayCards = arrayCards.sort(() => Math.random() - 0.5);
+    setShuffledCards(shuffledArrayCards);
+  }, []);
+
+  const onCardOpened = (index: number, card: iCard) => {
+    const newShuffledCards = [...shuffledCards];
+    const flippedCards = newShuffledCards.filter((card) => card?.isFlipped);
+    if (flippedCards.length === 2) {
+      newShuffledCards.forEach((card) => {
+        card.isFlipped = false;
+      });
+    }
+    newShuffledCards[index] = card;
+    setShuffledCards(newShuffledCards);
+  };
 
   return (
     <View style={styles.contentContainer}>
@@ -35,8 +53,8 @@ export default function GameScreen() {
             cardSize={cardSize.current}
             imageSize={imageSize.current}
             onCardOpened={onCardOpened}
-            isOpened={openedCards.includes(index)}
-            isGuessed={guessedCards.includes(index)}
+            // isOpened={openedCards.includes(index)}
+            // isGuessed={guessedCards.includes(index)}
           />
         )}
         numColumns={numColumns.current}

@@ -1,5 +1,5 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View, Image } from "react-native";
 import Animated from "react-native-reanimated";
 
@@ -17,7 +17,7 @@ export function AnimatedCard({
   cardSize,
   imageSize,
 }: {
-  item: iCard | undefined;
+  item: iCard;
   onCardOpened: (index: number, cardId: iCard | undefined) => void;
   index: number;
   isOpened: boolean;
@@ -25,20 +25,23 @@ export function AnimatedCard({
   cardSize: number;
   imageSize: number;
 }) {
+  const [isFlipped, setIsFlipped] = useState(item.isFlipped);
   const { frontAnimatedStyle, backAnimatedStyle, spin } = useFlipAnimation();
 
   useEffect(() => {
-    if (isOpened || isGuessed) {
+    if (isFlipped || item.isGuessed) {
       spin.value = 1;
     } else {
       spin.value = 0;
     }
-  }, [isOpened, isGuessed]);
+  }, [isFlipped]);
 
   const onOpened = () => {
     if (isOpened) {
       return;
     }
+    item.isFlipped = true;
+    setIsFlipped(true);
     onCardOpened(index, item);
   };
 
