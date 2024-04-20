@@ -13,6 +13,8 @@ export default function GameScreen() {
   const router = useRouter();
   const { difficultyId } = useLocalSearchParams();
   const numColumns = useRef(difficultyId === "easy" ? 2 : difficultyId === "medium" ? 3 : 4);
+  const cardSize = useRef<number>(difficultyId === "hard" ? 70 : 100);
+  const imageSize = useRef<number>(difficultyId === "hard" ? 50 : 70);
   const { shuffledCards, onCardOpened, openedCards, guessedCards } = useCards(
     difficultyId as string,
   );
@@ -30,6 +32,8 @@ export default function GameScreen() {
             key={index}
             index={index}
             item={item}
+            cardSize={cardSize.current}
+            imageSize={imageSize.current}
             onCardOpened={onCardOpened}
             isOpened={openedCards.includes(index)}
             isGuessed={guessedCards.includes(index)}

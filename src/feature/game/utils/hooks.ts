@@ -52,7 +52,7 @@ export function useCards(difficultyId: string) {
   useEffect(() => {
     const arrayLength = difficultyId === "easy" ? 8 : difficultyId === "medium" ? 12 : 16;
     if (guessedCards.length === arrayLength) {
-      Alert.alert("Congratulations!", "You made it, King! Go buy yourself a cake <З");
+      Alert.alert("Congratulations!", "You made it, King!");
     }
   }, [guessedCards]);
 

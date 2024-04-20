@@ -14,12 +14,16 @@ export function AnimatedCard({
   index,
   isOpened,
   isGuessed,
+  cardSize,
+  imageSize,
 }: {
   item: iCard | undefined;
   onCardOpened: (index: number, cardId: iCard | undefined) => void;
   index: number;
   isOpened: boolean;
   isGuessed: boolean;
+  cardSize: number;
+  imageSize: number;
 }) {
   const { frontAnimatedStyle, backAnimatedStyle, spin } = useFlipAnimation();
 
@@ -41,13 +45,19 @@ export function AnimatedCard({
   return (
     <View style={styles.cardContainer}>
       <TouchableOpacity onPress={onOpened}>
-        <Animated.View style={[styles.cardFront, frontAnimatedStyle]}>
+        <Animated.View
+          style={[styles.cardFront, frontAnimatedStyle, { width: cardSize, height: cardSize }]}
+        >
           <FontAwesome name="question" size={24} color={Colors.borderBlack} />
         </Animated.View>
       </TouchableOpacity>
       <TouchableOpacity onPress={onOpened}>
-        <Animated.View style={[styles.cardBack, backAnimatedStyle]}>
-          {item ? <Image source={images[item.imageId]} style={{ width: 70, height: 70 }} /> : null}
+        <Animated.View
+          style={[styles.cardBack, backAnimatedStyle, { width: cardSize, height: cardSize }]}
+        >
+          {item ? (
+            <Image source={images[item.imageId]} style={{ width: imageSize, height: imageSize }} />
+          ) : null}
         </Animated.View>
       </TouchableOpacity>
     </View>
