@@ -1,6 +1,6 @@
 To run this project locally you will need:
 
-1. Clone this repo on yuor local env.
+1. Clone this repo on your local env.
 2. Install Node.js (tested on LTS release).
 3. Run npm i to install dependencies.
 4. Run npx expo start to run development server.
