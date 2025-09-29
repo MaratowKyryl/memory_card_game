@@ -21,12 +21,13 @@ export default function GameScreen() {
 
   return (
     <View style={styles.contentContainer}>
-      <TouchableOpacity onPress={() => router.navigate(`/`)} style={styles.restartGameButton}>
+      <TouchableOpacity onPress={() => router.dismissTo(`/`)} style={styles.restartGameButton}>
         <FontAwesome name="repeat" size={24} color="black" />
       </TouchableOpacity>
       <BainsleyBoldText style={styles.restartGameTitle}>{Lang.NEW_GAME}</BainsleyBoldText>
       <FlatList
         data={shuffledCards}
+        contentContainerStyle={styles.cardsContainer}
         renderItem={({ item, index }) => (
           <AnimatedCard
             key={index}
@@ -64,5 +65,10 @@ const styles = StyleSheet.create({
   },
   restartGameTitle: {
     fontSize: 19,
+  },
+  cardsContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
 });
